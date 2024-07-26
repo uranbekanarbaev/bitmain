@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="inner">
+            {% for item in products %}
+            <div class="item">
+                <img src="{{ item.img.url }}" alt="" class="img" id="img{{ forloop.counter }}">
+                <span class="product-name">
+                    {{ item.name }}
+                </span>
+                <a href="{{ item.link }}"><button class="btn" id="btn{{ forloop.counter }}">View</button></a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="{% static 'main/app.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.moveTo(0, 0);
+            window.resizeTo(screen.width, screen.height);
+            // Initialize Telegram Web App
+            Telegram.WebApp.ready();
+
+            // Enable the back button
+            Telegram.WebApp.BackButton.show();
+            
+            // Add event listener for back button
+            Telegram.WebApp.BackButton.onClick(function () {
+                // Logic to handle the back navigation
+                handleBackButton();
+            });
+
+            // Function to handle back navigation
+            function handleBackButton() {
+                // Check if there is a previous state to go back to
+                if (history.length > 1) {
+                    history.back();
+                } else {
+                    // If no history, hide back button and do nothing
+                    Telegram.WebApp.BackButton.hide();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
